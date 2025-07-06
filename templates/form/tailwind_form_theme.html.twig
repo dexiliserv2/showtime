@@ -1,0 +1,12 @@
+{% use "form_div_layout.html.twig" %}
+
+{% block choice_widget_expanded %}
+    <div {{ block('widget_container_attributes') }} class="space-y-2">
+        {%- for child in form %}
+            {{- form_row(child, {
+                'row_attr': {
+                    'class': 'flex items-center space-x-2'}
+            }) -}}
+        {% endfor -%}
+    </div>
+{% endblock %}

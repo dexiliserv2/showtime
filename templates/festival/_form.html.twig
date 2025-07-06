@@ -1,4 +1,46 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-<button class="btn">{{ button_label|default('Save') }}</button>
+<div>
+    {{ form_errors(form) }}
+</div>
+
+<div class="flex flex-col">
+    <div class="flex flex-row">
+        <div>
+            {{ form_label(form.name) }}
+        </div>
+        <div>
+            {{ form_widget(form.name) }}
+        </div>
+    </div>
+    <div class="flex flex-row">
+        <div>
+            {{ form_label(form.location) }}
+        </div>
+        <div>
+            {{ form_widget(form.location) }}
+        </div>
+    </div>
+    <div class="flex flex-row">
+        <div>
+            {{ form_label(form.startDate) }}
+        </div>
+        <div>
+            {{ form_widget(form.startDate) }}
+        </div>
+    </div>
+    <div class="flex flex-row">
+        <div>
+            {{ form_label(form.endDate) }}
+        </div>
+        <div>
+            {{ form_widget(form.endDate) }}
+        </div>
+    </div>
+    <div>
+        {{ form_row(form.bands) }}
+    </div>
+</div>
+<div style="padding-left: 30px">
+    <button class="btn">{{ button_label|default('Save') }}</button>
+</div>
 {{ form_end(form) }}

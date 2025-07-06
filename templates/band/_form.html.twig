@@ -1,0 +1,27 @@
+{{ form_start(form) }}
+<div>
+    {{ form_errors(form) }}
+</div>
+
+<div class="flex flex-col">
+    <div class="flex flex-row">
+        <div>
+            {{ form_label(form.name) }}
+        </div>
+        <div>
+            {{ form_widget(form.name) }}
+        </div>
+    </div>
+    <div class="flex flex-row">
+        <div>
+            {{ form_label(form.genre) }}
+        </div>
+        <div>
+            {{ form_widget(form.genre) }}
+        </div>
+    </div>
+</div>
+<div style="padding-left: 30px">
+    <button class="btn">{{ button_label|default('Save') }}</button>
+</div>
+{{ form_end(form) }}
