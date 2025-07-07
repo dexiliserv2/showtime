@@ -20,6 +20,8 @@ class BookingType extends AbstractType
                 'class' => Festival::class,
                 'choice_label' => 'name',
                 'multiple' => false,
+                'expanded' => false,
+                'attr' => ['class' => 'festival-selector-field'],
             ]);
     }
 

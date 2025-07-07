@@ -1,3 +1,19 @@
+<div class="flex flex-col">
+    <div class="flex flex-row">
+        <div>
+            Select Location:
+        </div>
+        <div>
+            <select id="location-filter-select">
+                <option value="">-- Select a Location --</option>
+                {% for location in locations %}
+                    <option value="{{ location }}">{{ location }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+</div>
+
 {{ form_start(form) }}
 <div>
     {{ form_errors(form) }}
@@ -6,10 +22,10 @@
 <div class="flex flex-col">
     <div class="flex flex-row">
         <div>
-            {{ form_label(form.email) }}
+            {{ form_label(form.festival) }}
         </div>
         <div>
-            {{ form_widget(form.email) }}
+            {{ form_widget(form.festival) }}
         </div>
     </div>
     <div class="flex flex-row">
@@ -22,14 +38,73 @@
     </div>
     <div class="flex flex-row">
         <div>
-            {{ form_label(form.festival) }}
+            {{ form_label(form.email) }}
         </div>
         <div>
-            {{ form_widget(form.festival) }}
+            {{ form_widget(form.email) }}
         </div>
     </div>
 </div>
+
 <div style="padding-left: 30px">
     <button class="btn">{{ button_label|default('Save') }}</button>
 </div>
+
 {{ form_end(form) }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const locationSelect = document.getElementById('location-filter-select');
+        const festivalSelect = document.querySelector('.festival-selector-field');
+
+        festivalSelect.disabled = true;
+
+        locationSelect.addEventListener('change', function () {
+            const selectedLocation = this.value;
+
+            festivalSelect.innerHTML = '<option value="">-- Loading Festivals --</option>';
+            festivalSelect.disabled = true;
+
+            if (selectedLocation) {
+                const url = `{{ path('api_festivals_by_location') }}?location=${encodeURIComponent(selectedLocation)}`;
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        festivalSelect.innerHTML = '<option value="">-- Select a Festival --</option>';
+
+                        if (data.length > 0) {
+                            data.forEach(festival => {
+                                const option = document.createElement('option');
+                                option.value = festival.id;
+                                option.textContent = `${festival.name}`;
+                                festivalSelect.appendChild(option);
+                            });
+                            festivalSelect.disabled = false;
+                        } else {
+                            const option = document.createElement('option');
+                            option.value = "";
+                            option.textContent = "No festivals found for this location";
+                            festivalSelect.appendChild(option);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('There was a problem with the fetch operation:', error);
+                        festivalSelect.innerHTML = '<option value="">Error loading festivals</option>';
+                    })
+                    .finally(() => {
+                    });
+            } else {
+                festivalSelect.innerHTML = '<option value="">-- Select a Location First --</option>';
+                festivalSelect.disabled = true;
+            }
+        });
+    });
+</script>
+
+
